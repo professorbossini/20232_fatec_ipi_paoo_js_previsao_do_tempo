@@ -1,6 +1,5 @@
 require('dotenv').config()
 const axios = require('axios')
-console.log(process.env)
 // const appid='ef0b0973b783e0614ac87612ec04344b'
 // const q='Itu'
 // const units='metric'
@@ -16,11 +15,32 @@ console.log(process.env)
 // const url = process.env.url
 
 //desestruturar
-const { appid, q, units, cnt, language, url} = process.env
+const { appid, q, units, cnt, language, url } = process.env
 
 const end = `${url}?appid=${appid}&q=${q}&units=${units}&cnt=${cnt}&lang=${language}`
 
-console.log(end)
-
+axios.get(end)
+.then((res) => {
+  // console.log(res['data'])
+  // console.log("------------------------------------")
+  return res['data']
+})
+.then((res) => {
+  // console.log(res.list)
+  // console.log("------------------------------------")
+  return res.list
+})
+.then(res => {
+  //fazer um for sobre o res que
+  //exiba o dt de cada previsao
+  //exiba temperatura mínima e máxima para cada data
+  for (let previsao of res){
+    console.log(new Date (+previsao.dt * 1000).toLocaleString())
+    console.log(`Temperatura mínima: ${previsao.main.temp_min}`)
+    console.log(`Temperatura máxima: ${previsao.main.temp_max}`)
+    console.log("*********************************")
+  }
+  console.log("------------------------------------")
+})
 
 
